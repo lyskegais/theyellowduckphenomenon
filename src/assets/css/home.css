@@ -20,7 +20,7 @@ body.home {
 /* ---- Outer wrapper: font only, no layout ---- */
 .home-text {
   font-family: var(--font-body);
-  font-size: 7.5px;
+  font-size: 10pt;
   line-height: 1.5;
   letter-spacing: 0.01em;
   color: var(--dark-grey);
@@ -129,7 +129,7 @@ body.home {
 .home-section {
   height: 350px;
   column-width: 300px;
-  column-gap: 0;
+  column-gap: 20px;
   column-fill: auto;
   padding: 8px 0;
   cursor: pointer;
