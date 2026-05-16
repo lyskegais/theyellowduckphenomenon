@@ -1,0 +1,198 @@
+/* ============================================================
+   PROJECT PAGES — Grid dissolves, images breathe
+   ============================================================ */
+
+body.project {
+  padding-top: 48px;
+}
+
+.project-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: calc(var(--grid-unit) * 8) calc(var(--grid-unit) * 6);
+}
+
+.project-header {
+  margin-bottom: calc(var(--grid-unit) * 8);
+}
+
+.project-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 1.4rem;
+  letter-spacing: 0.08em;
+  color: var(--near-black);
+  margin-bottom: calc(var(--grid-unit) * 2);
+}
+
+.project-year,
+.project-medium {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: var(--mid-grey);
+  letter-spacing: 0.06em;
+  margin-right: calc(var(--grid-unit) * 2);
+}
+
+/* --- Image grid --- */
+.project-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: calc(var(--grid-unit) * 2);
+  margin-bottom: calc(var(--grid-unit) * 8);
+}
+
+/* Full-width for single image */
+.project-images:has(.project-figure:only-child) {
+  grid-template-columns: 1fr;
+  max-width: 680px;
+}
+
+.project-figure {
+  cursor: pointer;
+}
+
+.project-figure img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+}
+
+.project-figure:hover img {
+  filter: grayscale(0%);
+}
+
+.project-figure figcaption {
+  font-size: 0.7rem;
+  color: var(--mid-grey);
+  padding: calc(var(--grid-unit)) 0;
+  line-height: 1.4;
+}
+
+/* --- Project text --- */
+.project-text {
+  max-width: 580px;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  margin-bottom: calc(var(--grid-unit) * 6);
+}
+
+.project-text p {
+  margin-bottom: 1.4em;
+}
+
+/* --- Link back to thesis --- */
+.project-thesis-link {
+  margin-bottom: calc(var(--grid-unit) * 4);
+}
+.project-thesis-link a {
+  font-size: 0.75rem;
+  color: var(--mid-grey);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.15s;
+}
+.project-thesis-link a:hover { color: var(--near-black); }
+
+/* --- Back link --- */
+.project-nav {
+  padding-top: calc(var(--grid-unit) * 4);
+  border-top: 1px solid var(--light-grey);
+}
+.back-to-projects {
+  font-size: 0.75rem;
+  color: var(--mid-grey);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.15s;
+}
+.back-to-projects:hover { color: var(--near-black); }
+
+/* --- Projects index page --- */
+.projects-index {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: calc(var(--grid-unit) * 8) calc(var(--grid-unit) * 6);
+}
+
+.projects-index h1 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  color: var(--near-black);
+  margin-bottom: calc(var(--grid-unit) * 8);
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: calc(var(--grid-unit) * 4);
+}
+
+.project-card {
+  text-decoration: none;
+  display: block;
+  color: inherit;
+}
+
+.project-card-image {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+  margin-bottom: calc(var(--grid-unit) * 2);
+}
+
+.project-card:hover .project-card-image {
+  filter: grayscale(0%);
+}
+
+.project-card-title {
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--near-black);
+  margin-bottom: 4px;
+}
+
+.project-card-year {
+  font-size: 0.7rem;
+  color: var(--mid-grey);
+}
+
+/* --- Lightbox for image zoom --- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(26, 25, 23, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.lightbox.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  filter: none;
+}
+.lightbox-close {
+  position: absolute;
+  top: calc(var(--grid-unit) * 3);
+  right: calc(var(--grid-unit) * 3);
+  color: var(--mid-grey);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}

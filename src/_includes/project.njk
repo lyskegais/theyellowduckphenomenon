@@ -1,0 +1,46 @@
+{% extends "base.njk" %}
+
+{% block content %}
+<nav class="site-nav">
+  <a href="/" class="nav-home">The Yellow Duck Phenomenon</a>
+  <a href="/thesis/" class="nav-thesis">Thesis</a>
+  <a href="/projects/" class="nav-projects">Projects</a>
+</nav>
+
+<main class="project-page">
+  <header class="project-header">
+    <h1 class="project-title">{{ title }}</h1>
+    {% if year %}<span class="project-year">{{ year }}</span>{% endif %}
+    {% if medium %}<span class="project-medium">{{ medium }}</span>{% endif %}
+  </header>
+
+  {% if images %}
+  <div class="project-images">
+    {% for img in images %}
+    <figure class="project-figure">
+      <img src="/assets/images/projects/{{ folder }}/{{ img.file }}"
+           alt="{{ img.caption or title }}"
+           loading="lazy">
+      {% if img.caption %}
+      <figcaption>{{ img.caption }}</figcaption>
+      {% endif %}
+    </figure>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="project-text">
+    {{ content | safe }}
+  </div>
+
+  {% if thesisLink %}
+  <div class="project-thesis-link">
+    <a href="{{ thesisLink }}">→ Read in thesis</a>
+  </div>
+  {% endif %}
+
+  <nav class="project-nav">
+    <a href="/projects/" class="back-to-projects">← All projects</a>
+  </nav>
+</main>
+{% endblock %}

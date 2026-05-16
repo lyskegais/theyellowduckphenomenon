@@ -1,0 +1,142 @@
+/* ============================================================
+   THE YELLOW DUCK PHENOMENON
+   Base design system
+   ============================================================ */
+
+/* --- Fonts --- */
+@font-face {
+  font-family: 'Courier New';
+  src: url('/assets/fonts/CourierNew-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Courier New';
+  src: url('/assets/fonts/CourierNew-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Courier New';
+  src: url('/assets/fonts/CourierNew-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Courier New';
+  src: url('/assets/fonts/CourierNew-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'OverCross';
+  src: url('/assets/fonts/YWFTOverCross-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'OverCross';
+  src: url('/assets/fonts/YWFTOverCross-LightOblique.otf') format('opentype');
+  font-weight: 300;
+  font-style: oblique;
+  font-display: swap;
+}
+
+/* --- Reset & base --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --white:       #f5f5f3;
+  --off-white:   #eeede9;
+  --light-grey:  #d8d6d0;
+  --mid-grey:    #9e9b94;
+  --dark-grey:   #3a3936;
+  --near-black:  #1a1917;
+
+  --font-body:   'Courier New', 'Courier', monospace;
+  --font-display: 'OverCross', 'Courier New', monospace;
+
+  --grid-unit:   8px;
+  --col-width:   680px;
+
+  /* Grid line colour — fades out on project pages */
+  --grid-line:   rgba(158, 155, 148, 0.25);
+}
+
+html {
+  font-size: 16px;
+  background: var(--white);
+  color: var(--near-black);
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--light-grey);
+  text-underline-offset: 2px;
+}
+a:hover {
+  text-decoration-color: var(--near-black);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* --- Site nav (shared) --- */
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  gap: 2rem;
+  padding: calc(var(--grid-unit) * 2) calc(var(--grid-unit) * 3);
+  background: var(--white);
+  border-bottom: 1px solid var(--grid-line);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+.site-nav a {
+  text-decoration: none;
+  color: var(--mid-grey);
+}
+.site-nav a:hover,
+.site-nav a.active {
+  color: var(--near-black);
+}
+
+/* --- Grid background (visible on home + thesis, fades on project) --- */
+.home,
+.thesis {
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--grid-unit) var(--grid-unit);
+}
+
+.project {
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: calc(var(--grid-unit) * 4) calc(var(--grid-unit) * 4);
+  /* Larger grid = sparser = dissolving */
+}

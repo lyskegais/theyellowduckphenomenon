@@ -1,0 +1,44 @@
+---
+layout: false
+bodyClass: project
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — The Yellow Duck Phenomenon — Lyske Gais</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/project.css">
+</head>
+<body class="project">
+  <nav class="site-nav">
+    <a href="/">The Yellow Duck Phenomenon</a>
+    <a href="/thesis/">Thesis</a>
+    <a href="/projects/" class="active">Projects</a>
+  </nav>
+
+  <div class="projects-index">
+    <h1>Projects</h1>
+    <div class="projects-grid">
+      {% for project in collections.projects %}
+      {% set firstImage = project.data.images[0] %}
+      <a href="{{ project.url }}" class="project-card">
+        {% if firstImage %}
+        <img class="project-card-image"
+             src="/assets/images/projects/{{ project.data.folder }}/{{ firstImage.file }}"
+             alt="{{ project.data.title }}"
+             loading="lazy">
+        {% endif %}
+        <div class="project-card-title">{{ project.data.title }}</div>
+        {% if project.data.year %}
+        <div class="project-card-year">{{ project.data.year }}</div>
+        {% endif %}
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

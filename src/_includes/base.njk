@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if title %}{{ title }} — {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{{ description or site.description }}">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  {% if bodyClass == "home" %}
+  <link rel="stylesheet" href="/assets/css/home.css">
+  {% endif %}
+  {% if bodyClass == "thesis" %}
+  <link rel="stylesheet" href="/assets/css/thesis.css">
+  {% endif %}
+  {% if bodyClass == "project" %}
+  <link rel="stylesheet" href="/assets/css/project.css">
+  {% endif %}
+</head>
+<body class="{{ bodyClass or 'page' }}">
+
+  {% block content %}{% endblock %}
+
+  <script src="/assets/js/main.js"></script>
+  {% if bodyClass == "home" %}
+  <script src="/assets/js/home.js"></script>
+  {% endif %}
+  {% if bodyClass == "thesis" %}
+  <script src="/assets/js/thesis.js"></script>
+  {% endif %}
+</body>
+</html>

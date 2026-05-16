@@ -1,0 +1,226 @@
+/* ============================================================
+   THESIS PAGES
+   ============================================================ */
+
+body.thesis {
+  padding-top: 48px; /* nav height */
+}
+
+.thesis-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: calc(100vh - 48px);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* --- Sidebar TOC --- */
+.thesis-toc {
+  position: sticky;
+  top: 48px;
+  height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding: calc(var(--grid-unit) * 5) calc(var(--grid-unit) * 3);
+  border-right: 1px solid var(--light-grey);
+}
+
+.toc-title {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid-grey);
+  margin-bottom: calc(var(--grid-unit) * 3);
+}
+
+.toc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--grid-unit) * 1.5);
+}
+
+.toc-list li a {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--mid-grey);
+  text-decoration: none;
+  display: block;
+  padding: 2px 0;
+  border-left: 2px solid transparent;
+  padding-left: calc(var(--grid-unit));
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.toc-list li a:hover,
+.toc-list li.active a {
+  color: var(--near-black);
+  border-left-color: var(--near-black);
+}
+
+.toc-download {
+  margin-top: calc(var(--grid-unit) * 6);
+  padding-top: calc(var(--grid-unit) * 3);
+  border-top: 1px solid var(--light-grey);
+}
+.toc-download a {
+  font-size: 0.7rem;
+  color: var(--mid-grey);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+.toc-download a:hover { color: var(--near-black); }
+
+/* --- Main thesis body --- */
+.thesis-body {
+  padding: calc(var(--grid-unit) * 7) calc(var(--grid-unit) * 8);
+  max-width: 780px;
+}
+
+.thesis-header {
+  margin-bottom: calc(var(--grid-unit) * 6);
+  padding-bottom: calc(var(--grid-unit) * 4);
+  border-bottom: 1px solid var(--light-grey);
+}
+
+.chapter-label {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid-grey);
+  margin-bottom: calc(var(--grid-unit) * 2);
+}
+
+.chapter-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 1.6rem;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  color: var(--near-black);
+}
+
+/* --- Thesis prose --- */
+.thesis-text {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: var(--near-black);
+}
+
+.thesis-text p {
+  margin-bottom: 1.4em;
+}
+
+.thesis-text h2 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  margin: 3em 0 1em;
+  color: var(--near-black);
+}
+
+.thesis-text h3 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  margin: 2.5em 0 0.8em;
+  color: var(--near-black);
+}
+
+.thesis-text blockquote {
+  margin: 2em 0 2em calc(var(--grid-unit) * 4);
+  padding-left: calc(var(--grid-unit) * 3);
+  border-left: 1px solid var(--light-grey);
+  color: var(--dark-grey);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+/* --- Footnote tooltips --- */
+/* Inline superscript */
+.thesis-text sup a,
+.footnote-ref a {
+  font-size: 0.6rem;
+  vertical-align: super;
+  text-decoration: none;
+  color: var(--mid-grey);
+  cursor: help;
+  position: relative;
+}
+
+/* The tooltip itself — injected by JS */
+.fn-tooltip {
+  position: fixed;
+  z-index: 300;
+  max-width: 340px;
+  background: var(--near-black);
+  color: var(--white);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  padding: calc(var(--grid-unit) * 2) calc(var(--grid-unit) * 2.5);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.fn-tooltip.visible {
+  opacity: 1;
+}
+
+/* Footnote section at bottom of page */
+.footnotes {
+  margin-top: calc(var(--grid-unit) * 10);
+  padding-top: calc(var(--grid-unit) * 4);
+  border-top: 1px solid var(--light-grey);
+  font-size: 0.75rem;
+  color: var(--mid-grey);
+  line-height: 1.6;
+}
+.footnotes ol {
+  padding-left: 1.5em;
+}
+.footnotes li {
+  margin-bottom: 0.6em;
+}
+
+/* --- Chapter navigation --- */
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: calc(var(--grid-unit) * 12);
+  padding-top: calc(var(--grid-unit) * 4);
+  border-top: 1px solid var(--light-grey);
+  font-size: 0.75rem;
+}
+
+.chapter-prev, .chapter-next {
+  color: var(--mid-grey);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.15s;
+}
+.chapter-prev:hover, .chapter-next:hover {
+  color: var(--near-black);
+}
+.chapter-next { margin-left: auto; }
+
+/* --- Inline project images within thesis text --- */
+.thesis-image {
+  margin: 2em 0;
+  border: 1px solid var(--light-grey);
+}
+.thesis-image img {
+  width: 100%;
+  filter: grayscale(100%);
+}
+.thesis-image figcaption {
+  font-size: 0.7rem;
+  color: var(--mid-grey);
+  padding: calc(var(--grid-unit)) calc(var(--grid-unit) * 2);
+  line-height: 1.4;
+}
+.thesis-image a {
+  display: block;
+}
