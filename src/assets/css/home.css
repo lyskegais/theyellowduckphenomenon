@@ -25,89 +25,99 @@ body.home {
   letter-spacing: 0.01em;
   color: var(--dark-grey);
 
-  /* Responsive columns */
-  columns: 1;
+  /* One column ≈ one pocket-book page width (~105 mm / ~400px).
+     CSS automatically adds more columns as the viewport grows. */
+  column-width: 300px;
   column-gap: 0;
 }
 
-@media (min-width: 560px) {
-  .home-text { columns: 2; }
-}
-@media (min-width: 900px) {
-  .home-text { columns: 3; }
-}
-@media (min-width: 1300px) {
-  .home-text { columns: 4; }
-}
-
-/* ---- Chapter break: spans all columns ---- */
+/* ---- Chapter break: thesis title page image, spans all columns ---- */
 .chapter-marker {
   column-span: all;
   display: block;
-  position: relative;
-  padding: 0;
+  text-decoration: none;
+  text-align: center;
+  /* Thin rule above, breathing room below */
+  border-top: 1px solid var(--light-grey);
+  padding: 24px 0 0;
   margin: 0;
-  cursor: pointer;
-  overflow: hidden;
 }
 
-/* Dark band with dot-grid texture, echoing Part_I.png */
-.chapter-marker-inner {
+/* The title page scan — displayed at natural portrait size,
+   like a page from the book appearing in the text stream */
+.chapter-marker img {
+  display: inline-block;
+  /* ~one pocket-book page width; scales down on narrow screens */
+  max-width: min(300px, 60vw);
+  width: auto;
+  height: auto;
+  filter: grayscale(20%) contrast(1.05);
+  transition: filter 0.4s ease, transform 0.4s ease;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+}
+
+.chapter-marker:hover img {
+  filter: grayscale(0%) contrast(1.0);
+  transform: scale(1.02);
+}
+
+/* Fallback for missing title page images: dark page-sized block
+   matching the visual language of the scanned title pages */
+.chapter-marker-fallback {
+  display: inline-block;
+  max-width: min(300px, 60vw);
+  width: 300px;
+  min-height: 420px;          /* A6 portrait proportions */
   background: var(--near-black);
   background-image:
-    radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+    radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
   background-size: 4px 4px;
-  padding: 40px 48px 36px;
+  padding: 40px 32px 32px;
   position: relative;
-  display: flex;
-  align-items: flex-end;
-  gap: 48px;
-  min-height: 120px;
-  transition: background-color 0.2s ease;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+  transition: background-color 0.25s ease;
 }
-
-.chapter-marker:hover .chapter-marker-inner {
+.chapter-marker:hover .chapter-marker-fallback {
   background-color: #111;
 }
-
-/* OverCross chapter title — large, light against dark */
-.chapter-marker-title {
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-size: clamp(1.6rem, 4vw, 3.2rem);
-  letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.85);
-  line-height: 1.1;
-  flex: 1;
-  user-select: none;
-}
-
-/* Chapter number — small label top-left */
-.chapter-marker-num {
+.chapter-marker-fallback-num {
   position: absolute;
   top: 16px;
-  left: 48px;
+  left: 32px;
   font-family: var(--font-body);
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.3);
+}
+.chapter-marker-fallback-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.2rem, 3vw, 2.4rem);
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.82);
+  line-height: 1.1;
 }
 
-/* Click hint */
-.chapter-marker-hint {
-  font-family: var(--font-body);
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  color: rgba(255,255,255,0.3);
-  text-transform: uppercase;
-  position: absolute;
-  bottom: 16px;
-  right: 48px;
-  transition: color 0.2s;
+/* ---- Part divider (non-clickable, same visual weight as chapter images) ---- */
+.part-divider {
+  column-span: all;
+  display: block;
+  text-align: center;
+  padding: 32px 0 0;
+  border-top: 1px solid var(--light-grey);
 }
-.chapter-marker:hover .chapter-marker-hint {
-  color: rgba(255,255,255,0.6);
+
+.part-divider img {
+  display: inline-block;
+  max-width: min(300px, 60vw);
+  width: auto;
+  height: auto;
+  filter: grayscale(20%) contrast(1.05);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.12);
 }
 
 /* ---- Text section (one per chapter) ---- */

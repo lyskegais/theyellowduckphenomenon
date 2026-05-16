@@ -45,10 +45,8 @@ document.querySelectorAll('.home-section').forEach(section => {
 magnifier.addEventListener('mouseenter', () => clearTimeout(hideTimer));
 magnifier.addEventListener('mouseleave', hideMagnifier);
 
-// Chapter markers: click to navigate
-document.querySelectorAll('.chapter-marker').forEach(marker => {
-  marker.addEventListener('click', () => window.location.href = marker.dataset.url);
-});
+// Chapter markers are now <a> tags — no extra click handler needed.
+// (data-url kept for any future JS hooks)
 
 // Embedded images: click to navigate to project
 document.querySelectorAll('.home-image-embed').forEach(embed => {
