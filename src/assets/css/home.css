@@ -1,32 +1,62 @@
 /* ============================================================
-   HOMEPAGE — The text wallpaper (duck / linear layout)
+   HOMEPAGE — duck / linear layout
    ============================================================ */
 
 body.home {
   background: var(--white);
+  /* Fine grid sized to match the OverCross character grid at 2rem title size:
+     cap-height ≈ 22px ÷ 6 grid divisions ≈ 4px per cell */
   background-image:
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(158,155,148,0.12) 1px, transparent 1px);
-  background-size: 24px 24px;
+    linear-gradient(rgba(158,155,148,0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(158,155,148,0.18) 1px, transparent 1px);
+  background-size: 4px 4px;
   min-height: 100vh;
 }
 
 /* ---- Outer canvas ---- */
 .home-canvas {
-  padding: 80px 0 120px;
+  padding: 80px 40px 120px;
 }
 
-/* ---- Text wrapper: one long horizontal line ---- */
+/* ---- Text wrapper ---- */
 .home-text {
   font-family: var(--font-body);
   font-size: 7.5px;
   line-height: 1.5;
   letter-spacing: 0.01em;
   color: var(--dark-grey);
-  display: inline;
 }
 
-/* ---- Each chapter / section: inline, cursor pointer ---- */
+/* ---- Inline title in OverCross ---- */
+.home-title-inline {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 2rem;
+  letter-spacing: 0.1em;
+  color: var(--near-black);
+  line-height: 1;
+  vertical-align: baseline;
+}
+
+.home-title-sub {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--mid-grey);
+  vertical-align: baseline;
+}
+
+.home-title-author {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--mid-grey);
+  vertical-align: baseline;
+}
+
+/* ---- Each chapter / section: inline ---- */
 .home-section {
   display: inline;
   cursor: pointer;
@@ -37,13 +67,18 @@ body.home {
   color: var(--near-black);
 }
 
-/* ---- Duck images: same height as the text line ---- */
+/* ---- Duck images: 2× line height, inline ---- */
 .duck {
-  height: 1em;
+  height: 2em;
   width: auto;
   display: inline;
   vertical-align: middle;
   margin: 0 0.3em;
+  cursor: default;
+}
+
+.duck[data-label] {
+  cursor: help;
 }
 
 /* ---- Hover magnifier ---- */
@@ -92,46 +127,7 @@ body.home {
   transition: color 0.15s;
 }
 .magnifier-cta:hover { color: var(--near-black); }
-
-/* ---- Site title (top right, fixed) ---- */
-.home-title {
-  position: fixed;
-  top: 16px;
-  right: 24px;
-  z-index: 100;
-  text-align: right;
-  background: rgba(245,245,243,0.9);
-  backdrop-filter: blur(4px);
-  padding: 8px 12px;
-}
-
-.home-title h1 {
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
-  color: var(--near-black);
-  line-height: 1.4;
-  text-transform: uppercase;
-}
-
-.home-title .subtitle {
-  display: block;
-  font-family: var(--font-body);
-  font-size: 0.6rem;
-  color: var(--mid-grey);
-  letter-spacing: 0.08em;
-  margin-top: 2px;
-}
-
-.home-title .author {
-  display: block;
-  font-family: var(--font-body);
-  font-size: 0.6rem;
-  color: var(--mid-grey);
-  margin-top: 6px;
-  letter-spacing: 0.04em;
-}
+.magnifier-cta[hidden] { display: none; }
 
 /* ---- Bottom nav ---- */
 .home-nav {
