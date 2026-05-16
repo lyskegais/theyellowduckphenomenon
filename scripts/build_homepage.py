@@ -20,11 +20,18 @@ def html_attr(s: str) -> str:
     )
 
 
-def duck(label: str) -> str:
-    return (
-        f'<img class="duck" src="{DUCK_SRC}" alt="" '
-        f'data-label="{html_attr(label)}">'
-    )
+def img_url(path: str) -> str:
+    """Wrap an asset path in the Nunjucks | url filter."""
+    return f'{{{{ "{path}" | url }}}}'
+
+
+def duck(label: str, image: str | None = None, url: str | None = None) -> str:
+    attrs = [f'data-label="{html_attr(label)}"']
+    if image:
+        attrs.append(f'data-image="{img_url(image)}"')
+    if url:
+        attrs.append(f'data-url="{img_url(url)}"')
+    return f'<img class="duck" src="{DUCK_SRC}" alt="" {" ".join(attrs)}>'
 
 
 def parse_md(path: Path):
@@ -46,7 +53,7 @@ def parse_md(path: Path):
                 blocks.append({"type": kind, "text": text})
             current_para.clear()
 
-    state = "para"  # para | quote
+    state = "para"
     for line in raw.split("\n"):
         if not line.strip():
             flush(state)
@@ -65,14 +72,12 @@ def parse_md(path: Path):
             continue
         if line.strip() == ">":
             continue
-        # plain prose
         if state != "para":
             flush(state)
             state = "para"
         current_para.append(line.strip())
     flush(state)
 
-    # Build preview from first prose para
     preview = ""
     for b in blocks:
         if b["type"] in ("para", "quote") and len(b["text"]) > 60:
@@ -82,25 +87,18 @@ def parse_md(path: Path):
 
 
 def render_chapter_html(blocks, inline_ducks=None):
-    """Render the blocks as inline HTML for inside a .home-section span.
-
-    inline_ducks: dict mapping section heading -> duck label to insert
-                  right BEFORE the heading.
-    """
+    """inline_ducks: dict mapping section heading -> duck dict or tuple."""
     inline_ducks = inline_ducks or {}
     parts = []
     for b in blocks:
         text = b["text"]
         if b["type"] == "heading":
             if b["text"] in inline_ducks:
-                parts.append(duck(inline_ducks[b["text"]]))
-            parts.append(
-                f'<span class="section-head">{text}</span>'
-            )
+                d = inline_ducks[b["text"]]
+                parts.append(duck(d["label"], d.get("image"), d.get("url")))
+            parts.append(f'<span class="section-head">{text}</span>')
         elif b["type"] == "quote":
-            parts.append(
-                f'<span class="pull-quote">“{text}”</span>'
-            )
+            parts.append(f'<span class="pull-quote">“{text}”</span>')
         else:
             parts.append(text)
     return " ".join(parts)
@@ -112,7 +110,13 @@ CHAPTERS = [
         "md": "introduction.md",
         "url": "/thesis/introduction/",
         "label": "Introducing the Yellow Duck",
-        "before": [("Introduction — title page",)],
+        "before": [
+            {
+                "label": "Introduction — title page",
+                "image": "/assets/images/title-pages/Introduction.png",
+                "url": "/thesis/introduction/",
+            },
+        ],
         "inline_ducks": {},
     },
     {
@@ -120,38 +124,79 @@ CHAPTERS = [
         "url": "/thesis/chapter-1/",
         "label": "Chapter I — A fixed set of rules",
         "before": [
-            ("Part I — A fixed set of rules",),
-            ("Chapter I — title page",),
+            {
+                "label": "Part I — A fixed set of rules",
+                "image": "/assets/images/title-pages/Part_I.png",
+                "url": "/thesis/chapter-1/",
+            },
+            {
+                "label": "Chapter I — title page",
+                "image": "/assets/images/title-pages/Chapter_1.png",
+                "url": "/thesis/chapter-1/",
+            },
         ],
         "inline_ducks": {
-            "Definition of System": "General System Theory — Ludwig von Bertalanffy, 1968",
+            "Definition of System": {
+                "label": "General System Theory — Ludwig von Bertalanffy, 1968",
+                "url": "/thesis/chapter-1/",
+            },
         },
     },
     {
         "md": "chapter-2.md",
         "url": "/thesis/chapter-2/",
         "label": "Chapter II — A fixed set of rules on art",
-        "before": [("Chapter II — title page",)],
+        "before": [
+            {
+                "label": "Chapter II — title page",
+                "image": "/assets/images/title-pages/Chapter_2.png",
+                "url": "/thesis/chapter-2/",
+            },
+        ],
         "inline_ducks": {
-            "Conceptual Art": "Statements — Lawrence Weiner, 1968",
+            "Conceptual Art": {
+                "label": "Statements — Lawrence Weiner, 1968",
+                "url": "/thesis/chapter-2/",
+            },
         },
     },
     {
         "md": "chapter-3.md",
         "url": "/thesis/chapter-3/",
         "label": "Chapter III — Explained by artworks",
-        "before": [("Chapter III — title page",)],
+        "before": [
+            {
+                "label": "Chapter III — title page",
+                "image": "/assets/images/title-pages/Chapter_3.png",
+                "url": "/thesis/chapter-3/",
+            },
+        ],
         "inline_ducks": {
-            "A Transition From an Object-Oriented to a System-Oriented Culture":
-                "Four-sided Vortex — Robert Smithson, 1967",
-            "Art Does Not Reside in Material Entities":
-                "Condensation Cube — Hans Haacke, 1963–65",
-            "Art is Not Autonomous":
-                "Measurement: Room — Mel Bochner, 1969",
-            "Art is Conceptual Focus":
-                "Homes for America — Dan Graham, 1966–67",
-            "No Definition or Theory of Art Can Be Historically Unvarying":
-                "The Bowery in Two Inadequate Descriptive Systems — Martha Rosler, 1974–75",
+            "A Transition From an Object-Oriented to a System-Oriented Culture": {
+                "label": "Four-sided Vortex — Robert Smithson, 1967",
+                "image": "/assets/images/defff/Smithson.jpg",
+                "url": "/thesis/chapter-3/",
+            },
+            "Art Does Not Reside in Material Entities": {
+                "label": "Condensation Cube — Hans Haacke, 1963–65",
+                "image": "/assets/images/defff/63_65condensationcube2_347x500jpg.jpg",
+                "url": "/thesis/chapter-3/",
+            },
+            "Art is Not Autonomous": {
+                "label": "Measurement: Room — Mel Bochner, 1969",
+                "image": "/assets/images/defff/Mel_Brochner_measurment_room.jpg",
+                "url": "/thesis/chapter-3/",
+            },
+            "Art is Conceptual Focus": {
+                "label": "Homes for America — Dan Graham, 1966–67",
+                "image": "/assets/images/defff/grahamhomes6667.jpg",
+                "url": "/thesis/chapter-3/",
+            },
+            "No Definition or Theory of Art Can Be Historically Unvarying": {
+                "label": "The Bowery in Two Inadequate Descriptive Systems — Martha Rosler, 1974–75",
+                "image": "/assets/images/defff/Rosler.jpg",
+                "url": "/thesis/chapter-3/",
+            },
         },
     },
     {
@@ -159,34 +204,64 @@ CHAPTERS = [
         "url": "/thesis/chapter-4/",
         "label": "Chapter IV — Composition of Thoughts",
         "before": [
-            ("Part II — Composition",),
-            ("Chapter IV — title page",),
+            {
+                "label": "Part II — Composition",
+                "image": "/assets/images/title-pages/Part_II.png",
+                "url": "/thesis/chapter-4/",
+            },
+            {
+                "label": "Chapter IV — title page",
+                "url": "/thesis/chapter-4/",
+            },
         ],
         "inline_ducks": {
-            "System": "Lyske Gais — work documentation",
+            "System": {
+                "label": "Vorm — Lyske Gais",
+                "image": "/assets/images/defff/Vorm.jpg",
+                "url": "/projects/",
+            },
         },
     },
     {
         "md": "chapter-5.md",
         "url": "/thesis/chapter-5/",
         "label": "Chapter V — Finding the Yellow Duck",
-        "before": [("Chapter V — title page",)],
+        "before": [
+            {
+                "label": "Chapter V — title page",
+                "url": "/thesis/chapter-5/",
+            },
+        ],
         "inline_ducks": {
-            "Plan (Order)": "Lyske Gais — planning process",
+            "Plan (Order)": {
+                "label": "Lyske Gais — planning process",
+                "image": "/assets/images/defff/F1010007.jpg",
+                "url": "/projects/",
+            },
         },
     },
     {
         "md": "conclusion.md",
         "url": "/thesis/conclusion/",
         "label": "Concluding That Ducks Never Remain Yellow",
-        "before": [("Conclusion — title page",)],
+        "before": [
+            {
+                "label": "Conclusion — title page",
+                "url": "/thesis/conclusion/",
+            },
+        ],
         "inline_ducks": {},
     },
     {
         "md": "bibliography.md",
         "url": "/thesis/bibliography/",
         "label": "Bibliography",
-        "before": [("Bibliography — title page",)],
+        "before": [
+            {
+                "label": "Bibliography — title page",
+                "url": "/thesis/bibliography/",
+            },
+        ],
         "inline_ducks": {},
     },
 ]
@@ -195,9 +270,8 @@ CHAPTERS = [
 def build():
     body_parts = []
     for ch in CHAPTERS:
-        # Insert title-page / divider ducks before chapter text
-        for label_tuple in ch["before"]:
-            body_parts.append(duck(label_tuple[0]))
+        for d in ch["before"]:
+            body_parts.append(duck(d["label"], d.get("image"), d.get("url")))
 
         preview, blocks = parse_md(THESIS / ch["md"])
         inner = render_chapter_html(blocks, ch["inline_ducks"])
@@ -205,7 +279,7 @@ def build():
         body_parts.append(
             '<span class="home-section" '
             f'data-label="{html_attr(ch["label"])}" '
-            f'data-url="{{{{ "{ch["url"]}" | url }}}}" '
+            f'data-url="{img_url(ch["url"])}" '
             f'data-text="{html_attr(preview)}">'
             f'{inner}'
             '</span>'
@@ -231,9 +305,14 @@ layout: false
   <div class="home-canvas">
     <div class="home-text">
 
-      <span class="home-title-inline">The Yellow Duck Phenomenon</span>
-      <span class="home-title-sub"> — ways to order — </span>
-      <span class="home-title-author">Lyske Gais — </span>
+      <div class="home-title-block">
+        <div class="home-title-main">The Yellow Duck Phenomenon</div>
+        <div class="home-title-line2">
+          <span class="home-title-sub">ways to order</span>
+          <span class="home-title-sep"> — </span>
+          <span class="home-title-author">Lyske Gais</span>
+        </div>
+      </div>
 
       {body}
 
@@ -243,6 +322,7 @@ layout: false
   <!-- Magnifier overlay -->
   <div class="text-magnifier" id="text-magnifier" role="tooltip">
     <div class="magnifier-label" id="magnifier-label"></div>
+    <img class="magnifier-image" id="magnifier-image" alt="" hidden>
     <div class="magnifier-text" id="magnifier-text"></div>
     <a class="magnifier-cta" id="magnifier-cta" href="#"></a>
   </div>

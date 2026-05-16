@@ -4,12 +4,12 @@
 
 body.home {
   background: var(--white);
-  /* Fine grid sized to match the OverCross character grid at 2rem title size:
-     cap-height ≈ 22px ÷ 6 grid divisions ≈ 4px per cell */
+  /* Grid doubled to match the 4rem title in OverCross.
+     cap-height ≈ 45px ÷ 6 grid divisions ≈ 8px per cell */
   background-image:
     linear-gradient(rgba(158,155,148,0.18) 1px, transparent 1px),
     linear-gradient(90deg, rgba(158,155,148,0.18) 1px, transparent 1px);
-  background-size: 4px 4px;
+  background-size: 8px 8px;
   min-height: 100vh;
 }
 
@@ -27,33 +27,33 @@ body.home {
   color: var(--dark-grey);
 }
 
-/* ---- Inline title in OverCross ---- */
-.home-title-inline {
+/* ---- Title block: full title on top, subtitle + name below ---- */
+.home-title-block {
+  margin-bottom: 1.8rem;
+}
+
+.home-title-main {
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: 2rem;
-  letter-spacing: 0.1em;
+  font-size: 4rem;
+  letter-spacing: 0.06em;
   color: var(--near-black);
   line-height: 1;
-  vertical-align: baseline;
 }
 
-.home-title-sub {
+.home-title-line2 {
+  margin-top: 0.6rem;
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  color: var(--mid-grey);
-  vertical-align: baseline;
-}
-
-.home-title-author {
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-size: 0.65rem;
+  font-size: 1.1rem;
   letter-spacing: 0.08em;
   color: var(--mid-grey);
-  vertical-align: baseline;
+  line-height: 1;
+}
+
+.home-title-sep {
+  color: var(--light-grey);
+  margin: 0 0.3em;
 }
 
 /* ---- Each chapter / section: inline ---- */
@@ -67,15 +67,14 @@ body.home {
   color: var(--near-black);
 }
 
-/* Section heading inline within a chapter */
+/* Section heading inline: same size as body Courier, but bold */
 .section-head {
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-size: 1.4em;
-  letter-spacing: 0.06em;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1em;
+  letter-spacing: 0;
   color: var(--near-black);
   margin: 0 0.4em 0 0.6em;
-  vertical-align: baseline;
 }
 
 /* Blockquote pulled inline */
@@ -85,7 +84,7 @@ body.home {
   margin: 0 0.3em;
 }
 
-/* ---- Duck images: 2× line height, inline ---- */
+/* ---- Duck images ---- */
 .duck {
   height: 2em;
   width: auto;
@@ -95,9 +94,8 @@ body.home {
   cursor: default;
 }
 
-.duck[data-label] {
-  cursor: help;
-}
+.duck[data-label] { cursor: help; }
+.duck[data-url]   { cursor: pointer; }
 
 /* ---- Hover magnifier ---- */
 .text-magnifier {
@@ -118,6 +116,8 @@ body.home {
   pointer-events: auto;
 }
 
+.text-magnifier[data-url] { cursor: pointer; }
+
 .magnifier-label {
   font-size: 0.6rem;
   letter-spacing: 0.12em;
@@ -126,12 +126,26 @@ body.home {
   margin-bottom: 10px;
 }
 
+.magnifier-image {
+  display: block;
+  max-width: 100%;
+  max-height: 320px;
+  width: auto;
+  height: auto;
+  margin: 0 auto 10px;
+  border: 1px solid var(--light-grey);
+}
+
+.magnifier-image[hidden] { display: none; }
+
 .magnifier-text {
   font-family: var(--font-body);
   font-size: 0.8rem;
   line-height: 1.65;
   color: var(--near-black);
 }
+
+.magnifier-text:empty { display: none; }
 
 .magnifier-cta {
   display: block;
