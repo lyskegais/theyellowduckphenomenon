@@ -17,59 +17,61 @@ body.home {
   padding: 80px 0 120px;
 }
 
-/* ---- The tiny thesis text — outer wrapper ---- */
+/* ---- Outer wrapper: font only, no layout ---- */
 .home-text {
   font-family: var(--font-body);
   font-size: 7.5px;
   line-height: 1.5;
   letter-spacing: 0.01em;
   color: var(--dark-grey);
-  /* No column properties here — each .home-section handles its own columns */
 }
 
-/* ---- Chapter break: thesis title page image ---- */
-/* Lives outside the multi-column container — spans full width naturally */
+/* ════════════════════════════════════════════════════════════
+   CHAPTER ROW — image left, text scrolls right
+   ════════════════════════════════════════════════════════════ */
+
+.chapter-row {
+  display: flex;
+  align-items: flex-start;
+  border-top: 1px solid var(--light-grey);
+}
+
+/* ---- Left: chapter title page image ---- */
 .chapter-marker {
+  /* Fixed column: image doesn't shrink */
+  flex: 0 0 auto;
   display: block;
   text-decoration: none;
-  /* Thin rule above, breathing room below */
-  border-top: 1px solid var(--light-grey);
-  padding: 32px 0 0;
-  margin: 0;
+  /* No extra padding — image fills from top of row */
 }
 
-/* Image sits at the left edge, same width as one text column */
 .chapter-marker img {
   display: block;
-  max-width: min(300px, 60vw);
+  /* Let height define the image; width follows natural aspect ratio.
+     At ~600 px height an A6 page (105×148 mm) comes out ≈ 425 px wide. */
+  height: 600px;
   width: auto;
-  height: auto;
   filter: grayscale(20%) contrast(1.05);
-  transition: filter 0.4s ease, transform 0.4s ease;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+  transition: filter 0.4s ease;
 }
 
 .chapter-marker:hover img {
   filter: grayscale(0%) contrast(1.0);
-  transform: scale(1.02);
 }
 
-/* Fallback for missing title page images: dark page-sized block
-   matching the visual language of the scanned title pages */
+/* Fallback for chapters missing a scanned title page */
 .chapter-marker-fallback {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  max-width: min(300px, 60vw);
-  width: 300px;
-  min-height: 420px;          /* A6 portrait proportions */
+  width: 280px;
+  height: 600px;
   background: var(--near-black);
   background-image:
     radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
   background-size: 4px 4px;
-  padding: 40px 32px 32px;
+  padding: 40px 32px 36px;
   position: relative;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.18);
   transition: background-color 0.25s ease;
 }
 .chapter-marker:hover .chapter-marker-fallback {
@@ -94,42 +96,91 @@ body.home {
   line-height: 1.1;
 }
 
-/* ---- Part divider (non-clickable, same visual weight as chapter images) ---- */
+/* ---- Right: horizontally scrollable column text ---- */
+.chapter-text-scroll {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* Thin, unobtrusive scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--light-grey) transparent;
+}
+.chapter-text-scroll::-webkit-scrollbar {
+  height: 3px;
+}
+.chapter-text-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.chapter-text-scroll::-webkit-scrollbar-thumb {
+  background: var(--mid-grey);
+  border-radius: 0;
+}
+
+/* ---- Text section: fixed-height columns extending to the right ---- */
+/*
+   height: 600px        → each column is 600 px tall
+   column-width: 300px  → one column ≈ one pocket-book page wide
+   column-fill: auto    → fill column top-to-bottom before moving right
+   The total width is numColumns × 300px; .chapter-text-scroll scrolls
+   horizontally to reveal columns that don't fit the viewport.
+   On mobile the row stacks vertically and height is removed so
+   text reads as one continuous column.
+*/
+.home-section {
+  height: 600px;
+  column-width: 300px;
+  column-gap: 0;
+  column-fill: auto;
+  padding: 8px 0;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.home-section:hover {
+  color: var(--near-black);
+}
+
+/* ---- Part divider: full-width break between Part I and Part II ---- */
 .part-divider {
   display: block;
-  padding: 32px 0 0;
+  padding: 24px 0 0;
   border-top: 1px solid var(--light-grey);
 }
 
 .part-divider img {
   display: block;
-  max-width: min(300px, 60vw);
+  height: 200px;
   width: auto;
-  height: auto;
   filter: grayscale(20%) contrast(1.05);
-  box-shadow: 0 2px 16px rgba(0,0,0,0.12);
 }
 
-/* ---- Text section — each chapter is its own multi-column block ---- */
-/*
-   column-width: 300px   → one column ≈ one pocket-book page wide
-   column-fill: auto     → fill column left-to-right before balancing
-   No height constraint  → CSS auto-balances; with ~3 000 words at 7.5 px
-                           the balanced columns land naturally around 600 px tall
-   On mobile (<360 px)  → only one 300 px column = continuous scroll
-*/
-.home-section {
-  column-width: 300px;
-  column-gap: 0;
-  column-fill: balance;
-  padding: 8px 0 32px;
-  cursor: pointer;
-  transition: color 0.15s ease;
-  /* No break-inside: avoid — text must be free to flow across columns */
-}
-
-.home-section:hover {
-  color: var(--near-black);
+/* ════════════════════════════════════════════════════════════
+   MOBILE — stack vertically, single continuous scroll
+   ════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  .chapter-row {
+    flex-direction: column;
+  }
+  .chapter-marker img {
+    height: auto;
+    width: 100%;
+    max-width: 280px;
+  }
+  .chapter-marker-fallback {
+    width: 100%;
+    max-width: 280px;
+    height: 320px;
+  }
+  .chapter-text-scroll {
+    overflow-x: visible;
+    overflow-y: visible;
+  }
+  .home-section {
+    height: auto;
+    column-width: 100%;  /* single column */
+    column-fill: balance;
+    padding: 12px 0 24px;
+  }
 }
 
 /* ---- Inline embedded images ---- */
