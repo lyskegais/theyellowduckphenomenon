@@ -5,27 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% if title %}{{ title }} — {% endif %}{{ site.title }}</title>
   <meta name="description" content="{{ description or site.description }}">
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="{{ "/assets/css/style.css" | url }}">
   {% if bodyClass == "home" %}
-  <link rel="stylesheet" href="/assets/css/home.css">
+  <link rel="stylesheet" href="{{ "/assets/css/home.css" | url }}">
   {% endif %}
   {% if bodyClass == "thesis" %}
-  <link rel="stylesheet" href="/assets/css/thesis.css">
+  <link rel="stylesheet" href="{{ "/assets/css/thesis.css" | url }}">
   {% endif %}
   {% if bodyClass == "project" %}
-  <link rel="stylesheet" href="/assets/css/project.css">
+  <link rel="stylesheet" href="{{ "/assets/css/project.css" | url }}">
   {% endif %}
 </head>
 <body class="{{ bodyClass or 'page' }}">
 
   {% block content %}{% endblock %}
 
-  <script src="/assets/js/main.js"></script>
-  {% if bodyClass == "home" %}
-  <script src="/assets/js/home.js"></script>
-  {% endif %}
+  <script src="{{ "/assets/js/main.js" | url }}"></script>
   {% if bodyClass == "thesis" %}
-  <script src="/assets/js/thesis.js"></script>
+  <script src="{{ "/assets/js/thesis.js" | url }}"></script>
   {% endif %}
 </body>
 </html>

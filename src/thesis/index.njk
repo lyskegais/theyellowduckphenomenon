@@ -8,31 +8,31 @@ bodyClass: thesis
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Thesis — The Yellow Duck Phenomenon</title>
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="stylesheet" href="/assets/css/thesis.css">
+  <link rel="stylesheet" href="{{ "/assets/css/style.css" | url }}">
+  <link rel="stylesheet" href="{{ "/assets/css/thesis.css" | url }}">
 </head>
 <body class="thesis">
   <nav class="site-nav">
-    <a href="/">The Yellow Duck Phenomenon</a>
-    <a href="/thesis/" class="active">Thesis</a>
-    <a href="/projects/">Projects</a>
+    <a href="{{ "/" | url }}">The Yellow Duck Phenomenon</a>
+    <a href="{{ "/thesis/" | url }}" class="active">Thesis</a>
+    <a href="{{ "/projects/" | url }}">Projects</a>
   </nav>
 
   <div class="thesis-layout">
     <aside class="thesis-toc">
       <h2 class="toc-title">Contents</h2>
       <ol class="toc-list">
-        <li><a href="/thesis/introduction/">Introducing the Yellow Duck</a></li>
-        <li><a href="/thesis/chapter-1/">I — A fixed set of rules</a></li>
-        <li><a href="/thesis/chapter-2/">II — A fixed set of rules on art</a></li>
-        <li><a href="/thesis/chapter-3/">III — Explained by artworks</a></li>
-        <li><a href="/thesis/chapter-4/">IV — Composition of Thoughts</a></li>
-        <li><a href="/thesis/chapter-5/">V — Finding the Yellow Duck</a></li>
-        <li><a href="/thesis/conclusion/">Concluding That Ducks Never Remain Yellow</a></li>
-        <li><a href="/thesis/bibliography/">Bibliography</a></li>
+        <li><a href="{{ "/thesis/introduction/" | url }}">Introducing the Yellow Duck</a></li>
+        <li><a href="{{ "/thesis/chapter-1/" | url }}">I — A fixed set of rules</a></li>
+        <li><a href="{{ "/thesis/chapter-2/" | url }}">II — A fixed set of rules on art</a></li>
+        <li><a href="{{ "/thesis/chapter-3/" | url }}">III — Explained by artworks</a></li>
+        <li><a href="{{ "/thesis/chapter-4/" | url }}">IV — Composition of Thoughts</a></li>
+        <li><a href="{{ "/thesis/chapter-5/" | url }}">V — Finding the Yellow Duck</a></li>
+        <li><a href="{{ "/thesis/conclusion/" | url }}">Concluding That Ducks Never Remain Yellow</a></li>
+        <li><a href="{{ "/thesis/bibliography/" | url }}">Bibliography</a></li>
       </ol>
       <div class="toc-download">
-        <a href="/thesis/yellow-duck-thesis.pdf" target="_blank">↓ Download PDF</a>
+        <a href="{{ "/thesis/yellow-duck-thesis.pdf" | url }}" target="_blank">↓ Download PDF</a>
       </div>
     </aside>
 
@@ -46,10 +46,10 @@ bodyClass: thesis
         <p>Graduate Program Applied Art — aka The Dirty Art Department<br>
         Sandberg Institute, Amsterdam, July 2012</p>
         <p>The thesis moves through two parts. The first part (Chapters I–III) traces the intellectual lineage from Ludwig von Bertalanffy's General Systems Theory through Jack Burnham's Systems Aesthetics, arriving at a set of ideas about what art can do and be. The second part (Chapters IV–V) applies those ideas directly to the author's own art practice, using Michel Foucault's <em>The Order of Things</em> as a guide.</p>
-        <p><a href="/thesis/introduction/">Begin reading →</a></p>
+        <p><a href="{{ "/thesis/introduction/" | url }}">Begin reading →</a></p>
       </article>
     </main>
   </div>
-  <script src="/assets/js/main.js"></script>
+  <script src="{{ "/assets/js/main.js" | url }}"></script>
 </body>
 </html>

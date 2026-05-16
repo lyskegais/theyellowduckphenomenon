@@ -2,9 +2,9 @@
 
 {% block content %}
 <nav class="site-nav">
-  <a href="/" class="nav-home">The Yellow Duck Phenomenon</a>
-  <a href="/thesis/" class="nav-thesis">Thesis</a>
-  <a href="/projects/" class="nav-projects">Projects</a>
+  <a href="{{ "/" | url }}" class="nav-home">The Yellow Duck Phenomenon</a>
+  <a href="{{ "/thesis/" | url }}" class="nav-thesis">Thesis</a>
+  <a href="{{ "/projects/" | url }}" class="nav-projects">Projects</a>
 </nav>
 
 <main class="project-page">
@@ -18,7 +18,7 @@
   <div class="project-images">
     {% for img in images %}
     <figure class="project-figure">
-      <img src="/assets/images/projects/{{ folder }}/{{ img.file }}"
+      <img src="{{ ("/assets/images/projects/" + folder + "/" + img.file) | url }}"
            alt="{{ img.caption or title }}"
            loading="lazy">
       {% if img.caption %}
@@ -35,12 +35,12 @@
 
   {% if thesisLink %}
   <div class="project-thesis-link">
-    <a href="{{ thesisLink }}">→ Read in thesis</a>
+    <a href="{{ thesisLink | url }}">→ Read in thesis</a>
   </div>
   {% endif %}
 
   <nav class="project-nav">
-    <a href="/projects/" class="back-to-projects">← All projects</a>
+    <a href="{{ "/projects/" | url }}" class="back-to-projects">← All projects</a>
   </nav>
 </main>
 {% endblock %}

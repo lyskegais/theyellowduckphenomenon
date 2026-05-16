@@ -31,6 +31,7 @@ module.exports = function(eleventyConfig) {
   });
 
   return {
+    pathPrefix: "/theyellowduckphenomenon/",
     dir: {
       input: "src",
       output: "_site",

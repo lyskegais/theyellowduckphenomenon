@@ -2,48 +2,46 @@
 
 {% block content %}
 <nav class="site-nav">
-  <a href="/" class="nav-home">The Yellow Duck Phenomenon</a>
-  <a href="/thesis/" class="nav-thesis">Thesis</a>
-  <a href="/projects/" class="nav-projects">Projects</a>
+  <a href="{{ "/" | url }}" class="nav-home">The Yellow Duck Phenomenon</a>
+  <a href="{{ "/thesis/" | url }}" class="nav-thesis">Thesis</a>
+  <a href="{{ "/projects/" | url }}" class="nav-projects">Projects</a>
 </nav>
 
 <div class="thesis-layout">
 
-  <!-- Sidebar: Table of Contents -->
   <aside class="thesis-toc">
     <h2 class="toc-title">Contents</h2>
     <ol class="toc-list">
       <li class="{{ 'active' if slug == 'introduction' }}">
-        <a href="/thesis/introduction/">Introducing the Yellow Duck</a>
+        <a href="{{ "/thesis/introduction/" | url }}">Introducing the Yellow Duck</a>
       </li>
       <li class="{{ 'active' if slug == 'chapter-1' }}">
-        <a href="/thesis/chapter-1/">I — A fixed set of rules</a>
+        <a href="{{ "/thesis/chapter-1/" | url }}">I — A fixed set of rules</a>
       </li>
       <li class="{{ 'active' if slug == 'chapter-2' }}">
-        <a href="/thesis/chapter-2/">II — A fixed set of rules on art</a>
+        <a href="{{ "/thesis/chapter-2/" | url }}">II — A fixed set of rules on art</a>
       </li>
       <li class="{{ 'active' if slug == 'chapter-3' }}">
-        <a href="/thesis/chapter-3/">III — Explained by artworks</a>
+        <a href="{{ "/thesis/chapter-3/" | url }}">III — Explained by artworks</a>
       </li>
       <li class="{{ 'active' if slug == 'chapter-4' }}">
-        <a href="/thesis/chapter-4/">IV — Composition of Thoughts</a>
+        <a href="{{ "/thesis/chapter-4/" | url }}">IV — Composition of Thoughts</a>
       </li>
       <li class="{{ 'active' if slug == 'chapter-5' }}">
-        <a href="/thesis/chapter-5/">V — Finding the Yellow Duck</a>
+        <a href="{{ "/thesis/chapter-5/" | url }}">V — Finding the Yellow Duck</a>
       </li>
       <li class="{{ 'active' if slug == 'conclusion' }}">
-        <a href="/thesis/conclusion/">Concluding That Ducks Never Remain Yellow</a>
+        <a href="{{ "/thesis/conclusion/" | url }}">Concluding That Ducks Never Remain Yellow</a>
       </li>
       <li class="{{ 'active' if slug == 'bibliography' }}">
-        <a href="/thesis/bibliography/">Bibliography</a>
+        <a href="{{ "/thesis/bibliography/" | url }}">Bibliography</a>
       </li>
     </ol>
     <div class="toc-download">
-      <a href="/thesis/yellow-duck-thesis.pdf" target="_blank">↓ Download PDF</a>
+      <a href="{{ "/thesis/yellow-duck-thesis.pdf" | url }}" target="_blank">↓ Download PDF</a>
     </div>
   </aside>
 
-  <!-- Main content -->
   <main class="thesis-body">
     <header class="thesis-header">
       <span class="chapter-label">{{ chapterLabel }}</span>
@@ -54,13 +52,12 @@
       {{ content | safe }}
     </article>
 
-    <!-- Chapter navigation -->
     <nav class="chapter-nav">
       {% if prevChapter %}
-      <a href="{{ prevChapter.url }}" class="chapter-prev">← {{ prevChapter.title }}</a>
+      <a href="{{ prevChapter.url | url }}" class="chapter-prev">← {{ prevChapter.title }}</a>
       {% endif %}
       {% if nextChapter %}
-      <a href="{{ nextChapter.url }}" class="chapter-next">{{ nextChapter.title }} →</a>
+      <a href="{{ nextChapter.url | url }}" class="chapter-next">{{ nextChapter.title }} →</a>
       {% endif %}
     </nav>
   </main>
