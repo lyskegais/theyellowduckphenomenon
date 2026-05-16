@@ -49,7 +49,7 @@ body.home {
   display: block;
   /* Let height define the image; width follows natural aspect ratio.
      At ~600 px height an A6 page (105×148 mm) comes out ≈ 425 px wide. */
-  height: 600px;
+  height: 350px;
   width: auto;
   filter: grayscale(20%) contrast(1.05);
   transition: filter 0.4s ease;
@@ -65,7 +65,7 @@ body.home {
   flex-direction: column;
   justify-content: flex-end;
   width: 280px;
-  height: 600px;
+  height: 350px;
   background: var(--near-black);
   background-image:
     radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
@@ -127,7 +127,7 @@ body.home {
    text reads as one continuous column.
 */
 .home-section {
-  height: 600px;
+  height: 350px;
   column-width: 300px;
   column-gap: 0;
   column-fill: auto;
