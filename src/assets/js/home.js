@@ -1,5 +1,5 @@
 // ============================================================
-// HOMEPAGE — hover-enlarge interaction
+// HOMEPAGE interactions
 // ============================================================
 
 const magnifier = document.getElementById('text-magnifier');
@@ -7,71 +7,53 @@ const magnifierText = document.getElementById('magnifier-text');
 const magnifierLabel = document.getElementById('magnifier-label');
 const magnifierCta = document.getElementById('magnifier-cta');
 
-let activeSection = null;
 let hideTimer = null;
 
 function showMagnifier(section, x, y) {
   clearTimeout(hideTimer);
-  const text = section.dataset.text;
-  const label = section.dataset.label;
-  const url = section.dataset.url;
+  magnifierLabel.textContent = section.dataset.label;
+  magnifierText.textContent = section.dataset.text;
+  magnifierCta.textContent = '→ Read ' + section.dataset.label;
+  magnifierCta.href = section.dataset.url;
 
-  magnifierLabel.textContent = label;
-  magnifierText.textContent = text;
-  magnifierCta.textContent = '→ Read ' + label;
-  magnifierCta.href = url;
-
-  // Position: prefer top-right area, avoid edges
-  const w = 420;
-  const h = 200;
-  const margin = 20;
+  const w = 380, margin = 20;
+  const h = magnifier.offsetHeight || 160;
   let left = x + margin;
-  let top = y - h / 2;
-
+  let top  = y - h / 2;
   if (left + w > window.innerWidth - margin) left = x - w - margin;
   if (top < margin) top = margin;
   if (top + h > window.innerHeight - margin) top = window.innerHeight - h - margin;
 
   magnifier.style.left = left + 'px';
-  magnifier.style.top = top + 'px';
+  magnifier.style.top  = top  + 'px';
   magnifier.classList.add('visible');
 }
 
 function hideMagnifier() {
-  hideTimer = setTimeout(() => {
-    magnifier.classList.remove('visible');
-    activeSection = null;
-  }, 150);
+  hideTimer = setTimeout(() => magnifier.classList.remove('visible'), 180);
 }
 
-// Attach hover listeners to each section
+// Text sections: hover to enlarge, click to navigate
 document.querySelectorAll('.home-section').forEach(section => {
-  section.addEventListener('mouseenter', function(e) {
-    activeSection = this;
-    showMagnifier(this, e.clientX, e.clientY);
-  });
-
-  section.addEventListener('mousemove', function(e) {
-    if (activeSection === this) {
-      showMagnifier(this, e.clientX, e.clientY);
-    }
-  });
-
+  section.addEventListener('mouseenter', e => showMagnifier(section, e.clientX, e.clientY));
+  section.addEventListener('mousemove',  e => showMagnifier(section, e.clientX, e.clientY));
   section.addEventListener('mouseleave', hideMagnifier);
-
-  section.addEventListener('click', function() {
-    window.location.href = this.dataset.url;
-  });
+  section.addEventListener('click', () => window.location.href = section.dataset.url);
 });
 
-// Keep magnifier open when hovering over it
+// Keep magnifier open when hovering it
 magnifier.addEventListener('mouseenter', () => clearTimeout(hideTimer));
 magnifier.addEventListener('mouseleave', hideMagnifier);
 
-// Embedded image click → project page
+// Chapter markers: click to navigate
+document.querySelectorAll('.chapter-marker').forEach(marker => {
+  marker.addEventListener('click', () => window.location.href = marker.dataset.url);
+});
+
+// Embedded images: click to navigate to project
 document.querySelectorAll('.home-image-embed').forEach(embed => {
-  embed.addEventListener('click', function(e) {
+  embed.addEventListener('click', e => {
     e.stopPropagation();
-    window.location.href = this.dataset.url;
+    window.location.href = embed.dataset.url;
   });
 });
