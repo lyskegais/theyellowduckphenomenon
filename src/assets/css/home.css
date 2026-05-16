@@ -34,6 +34,7 @@ body.home {
   display: flex;
   align-items: flex-start;
   border-top: 1px solid var(--light-grey);
+  margin-bottom: 30px;
 }
 
 /* ---- Left: chapter title page image ---- */
@@ -128,7 +129,7 @@ body.home {
 */
 .home-section {
   height: 400px;
-  column-width: 300px;
+  column-width: 400px;
   column-gap: 30px;
   column-fill: auto;
   padding: 8px 0;
@@ -145,6 +146,7 @@ body.home {
   display: block;
   padding: 24px 0 0;
   border-top: 1px solid var(--light-grey);
+  margin-bottom: 30px;
 }
 
 .part-divider img {
