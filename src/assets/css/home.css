@@ -1,138 +1,36 @@
 /* ============================================================
-   HOMEPAGE — The text wallpaper
+   HOMEPAGE — The text wallpaper (duck / linear layout)
    ============================================================ */
 
 body.home {
   background: var(--white);
-  /* Layered grid: horizontal baseline + vertical column lines */
   background-image:
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, rgba(158,155,148,0.12) 1px, transparent 1px);
   background-size: 24px 24px;
   min-height: 100vh;
+  overflow-x: auto;
 }
 
-/* ---- Outer canvas: full page, scrollable ---- */
+/* ---- Outer canvas ---- */
 .home-canvas {
   padding: 80px 0 120px;
+  white-space: nowrap;
 }
 
-/* ---- Outer wrapper: font only, no layout ---- */
+/* ---- Text wrapper: one long horizontal line ---- */
 .home-text {
   font-family: var(--font-body);
-  font-size: 9pt;
+  font-size: 7.5px;
   line-height: 1.5;
   letter-spacing: 0.01em;
   color: var(--dark-grey);
+  display: inline;
 }
 
-/* ════════════════════════════════════════════════════════════
-   CHAPTER ROW — image left, text scrolls right
-   ════════════════════════════════════════════════════════════ */
-
-.chapter-row {
-  display: flex;
-  align-items: flex-start;
-  border-top: 1px solid var(--light-grey);
-  margin-bottom: 30px;
-}
-
-/* ---- Left: chapter title page image ---- */
-.chapter-marker {
-  /* Fixed column: image doesn't shrink */
-  flex: 0 0 auto;
-  display: block;
-  text-decoration: none;
-  /* No extra padding — image fills from top of row */
-}
-
-.chapter-marker img {
-  display: block;
-  /* Let height define the image; width follows natural aspect ratio.
-     At ~600 px height an A6 page (105×148 mm) comes out ≈ 425 px wide. */
-  height: 400px;
-  width: auto;
-  filter: grayscale(20%) contrast(1.05);
-  transition: filter 0.4s ease;
-}
-
-.chapter-marker:hover img {
-  filter: grayscale(0%) contrast(1.0);
-}
-
-/* Fallback for chapters missing a scanned title page */
-.chapter-marker-fallback {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  width: 280px;
-  height: 400px;
-  background: var(--near-black);
-  background-image:
-    radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
-  background-size: 4px 4px;
-  padding: 40px 32px 36px;
-  position: relative;
-  transition: background-color 0.25s ease;
-}
-.chapter-marker:hover .chapter-marker-fallback {
-  background-color: #111;
-}
-.chapter-marker-fallback-num {
-  position: absolute;
-  top: 16px;
-  left: 32px;
-  font-family: var(--font-body);
-  font-size: 0.55rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.3);
-}
-.chapter-marker-fallback-title {
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-size: clamp(1.2rem, 3vw, 2.4rem);
-  letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.82);
-  line-height: 1.1;
-}
-
-/* ---- Right: horizontally scrollable column text ---- */
-.chapter-text-scroll {
-  flex: 1;
-  overflow-x: auto;
-  overflow-y: hidden;
-  /* Thin, unobtrusive scrollbar */
-  scrollbar-width: thin;
-  scrollbar-color: var(--light-grey) transparent;
-}
-.chapter-text-scroll::-webkit-scrollbar {
-  height: 3px;
-}
-.chapter-text-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-.chapter-text-scroll::-webkit-scrollbar-thumb {
-  background: var(--mid-grey);
-  border-radius: 0;
-}
-
-/* ---- Text section: fixed-height columns extending to the right ---- */
-/*
-   height: 600px        → each column is 600 px tall
-   column-width: 300px  → one column ≈ one pocket-book page wide
-   column-fill: auto    → fill column top-to-bottom before moving right
-   The total width is numColumns × 300px; .chapter-text-scroll scrolls
-   horizontally to reveal columns that don't fit the viewport.
-   On mobile the row stacks vertically and height is removed so
-   text reads as one continuous column.
-*/
+/* ---- Each chapter / section: inline, cursor pointer ---- */
 .home-section {
-  height: 400px;
-  column-width: 400px;
-  column-gap: 30px;
-  column-fill: auto;
-  padding: 8px 0;
+  display: inline;
   cursor: pointer;
   transition: color 0.15s ease;
 }
@@ -141,75 +39,13 @@ body.home {
   color: var(--near-black);
 }
 
-/* ---- Part divider: full-width break between Part I and Part II ---- */
-.part-divider {
-  display: block;
-  padding: 24px 0 0;
-  border-top: 1px solid var(--light-grey);
-  margin-bottom: 30px;
-}
-
-.part-divider img {
-  display: block;
-  height: 200px;
+/* ---- Duck images: same height as the text line ---- */
+.duck {
+  height: 1em;
   width: auto;
-  filter: grayscale(20%) contrast(1.05);
-}
-
-/* ════════════════════════════════════════════════════════════
-   MOBILE — stack vertically, single continuous scroll
-   ════════════════════════════════════════════════════════════ */
-@media (max-width: 640px) {
-  .chapter-row {
-    flex-direction: column;
-  }
-  .chapter-marker img {
-    height: auto;
-    width: 100%;
-    max-width: 280px;
-  }
-  .chapter-marker-fallback {
-    width: 100%;
-    max-width: 280px;
-    height: 320px;
-  }
-  .chapter-text-scroll {
-    overflow-x: visible;
-    overflow-y: visible;
-  }
-  .home-section {
-    height: auto;
-    column-width: 100%;  /* single column */
-    column-fill: balance;
-    padding: 12px 0 24px;
-  }
-}
-
-/* ---- Inline embedded images ---- */
-.home-image-embed {
-  float: left;
-  margin: 4px 8px 4px 0;
-  cursor: pointer;
-  break-inside: avoid;
-}
-
-.home-image-embed img {
-  display: block;
-  filter: grayscale(100%) contrast(1.1);
-  transition: filter 0.2s ease, transform 0.2s ease;
-}
-
-.home-image-embed:hover img {
-  filter: grayscale(60%) contrast(1.2);
-  transform: scale(1.05);
-}
-
-.embed-caption {
-  font-size: 5.5px;
-  color: var(--mid-grey);
-  margin-top: 1px;
-  text-align: center;
-  display: block;
+  display: inline;
+  vertical-align: middle;
+  margin: 0 0.3em;
 }
 
 /* ---- Hover magnifier ---- */
