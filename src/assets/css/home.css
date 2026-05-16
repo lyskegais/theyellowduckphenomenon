@@ -20,7 +20,7 @@ body.home {
 /* ---- Outer wrapper: font only, no layout ---- */
 .home-text {
   font-family: var(--font-body);
-  font-size: 10pt;
+  font-size: 9pt;
   line-height: 1.5;
   letter-spacing: 0.01em;
   color: var(--dark-grey);
@@ -49,7 +49,7 @@ body.home {
   display: block;
   /* Let height define the image; width follows natural aspect ratio.
      At ~600 px height an A6 page (105×148 mm) comes out ≈ 425 px wide. */
-  height: 350px;
+  height: 400px;
   width: auto;
   filter: grayscale(20%) contrast(1.05);
   transition: filter 0.4s ease;
@@ -65,7 +65,7 @@ body.home {
   flex-direction: column;
   justify-content: flex-end;
   width: 280px;
-  height: 350px;
+  height: 400px;
   background: var(--near-black);
   background-image:
     radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
@@ -127,9 +127,9 @@ body.home {
    text reads as one continuous column.
 */
 .home-section {
-  height: 350px;
+  height: 400px;
   column-width: 300px;
-  column-gap: 20px;
+  column-gap: 30px;
   column-fill: auto;
   padding: 8px 0;
   cursor: pointer;
