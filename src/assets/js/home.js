@@ -55,11 +55,23 @@ document.querySelectorAll('.home-section').forEach(section => {
   section.addEventListener('click', () => window.location.href = section.dataset.url);
 });
 
-// Duck images with labels
+// Duck images with labels — stopPropagation so they don't get overridden
+// by the .home-section listener when nested inside a chapter
 document.querySelectorAll('.duck[data-label]').forEach(duck => {
-  duck.addEventListener('mouseenter', e => showDuckTip(duck, e.clientX, e.clientY));
-  duck.addEventListener('mousemove',  e => showDuckTip(duck, e.clientX, e.clientY));
-  duck.addEventListener('mouseleave', hideMagnifier);
+  duck.addEventListener('mouseenter', e => {
+    e.stopPropagation();
+    showDuckTip(duck, e.clientX, e.clientY);
+  });
+  duck.addEventListener('mousemove',  e => {
+    e.stopPropagation();
+    showDuckTip(duck, e.clientX, e.clientY);
+  });
+  duck.addEventListener('mouseleave', e => {
+    e.stopPropagation();
+    hideMagnifier();
+  });
+  // Don't navigate when clicking a duck inside a chapter section
+  duck.addEventListener('click', e => e.stopPropagation());
 });
 
 // Keep magnifier open when hovering it directly

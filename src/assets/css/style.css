@@ -6,42 +6,42 @@
 /* --- Fonts --- */
 @font-face {
   font-family: 'Courier New';
-  src: url('/assets/fonts/CourierNew-Regular.ttf') format('truetype');
+  src: url('../fonts/CourierNew-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Courier New';
-  src: url('/assets/fonts/CourierNew-Bold.ttf') format('truetype');
+  src: url('../fonts/CourierNew-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Courier New';
-  src: url('/assets/fonts/CourierNew-Italic.ttf') format('truetype');
+  src: url('../fonts/CourierNew-Italic.ttf') format('truetype');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: 'Courier New';
-  src: url('/assets/fonts/CourierNew-BoldItalic.ttf') format('truetype');
+  src: url('../fonts/CourierNew-BoldItalic.ttf') format('truetype');
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: 'OverCross';
-  src: url('/assets/fonts/YWFTOverCross-Light.otf') format('opentype');
+  src: url('../fonts/YWFTOverCross-Light.otf') format('opentype');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'OverCross';
-  src: url('/assets/fonts/YWFTOverCross-LightOblique.otf') format('opentype');
+  src: url('../fonts/YWFTOverCross-LightOblique.otf') format('opentype');
   font-weight: 300;
   font-style: oblique;
   font-display: swap;

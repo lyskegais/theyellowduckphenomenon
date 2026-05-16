@@ -67,6 +67,24 @@ body.home {
   color: var(--near-black);
 }
 
+/* Section heading inline within a chapter */
+.section-head {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 1.4em;
+  letter-spacing: 0.06em;
+  color: var(--near-black);
+  margin: 0 0.4em 0 0.6em;
+  vertical-align: baseline;
+}
+
+/* Blockquote pulled inline */
+.pull-quote {
+  font-style: italic;
+  color: var(--near-black);
+  margin: 0 0.3em;
+}
+
 /* ---- Duck images: 2× line height, inline ---- */
 .duck {
   height: 2em;
