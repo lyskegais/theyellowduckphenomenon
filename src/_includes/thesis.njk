@@ -12,6 +12,9 @@
   <aside class="thesis-toc">
     <h2 class="toc-title">Contents</h2>
     <ol class="toc-list">
+      <li class="{{ 'active' if slug == 'cover' }}">
+        <a href="{{ "/thesis/cover/" | url }}">Cover</a>
+      </li>
       <li class="{{ 'active' if slug == 'introduction' }}">
         <a href="{{ "/thesis/introduction/" | url }}">Introducing the Yellow Duck</a>
       </li>
@@ -24,6 +27,9 @@
       <li class="{{ 'active' if slug == 'chapter-3' }}">
         <a href="{{ "/thesis/chapter-3/" | url }}">III — Explained by artworks</a>
       </li>
+      <li class="{{ 'active' if slug == 'approach' }}">
+        <a href="{{ "/thesis/approach/" | url }}">Approach</a>
+      </li>
       <li class="{{ 'active' if slug == 'chapter-4' }}">
         <a href="{{ "/thesis/chapter-4/" | url }}">IV — Composition of Thoughts</a>
       </li>
@@ -33,8 +39,14 @@
       <li class="{{ 'active' if slug == 'conclusion' }}">
         <a href="{{ "/thesis/conclusion/" | url }}">Concluding That Ducks Never Remain Yellow</a>
       </li>
+      <li class="{{ 'active' if slug == 'appendix' }}">
+        <a href="{{ "/thesis/appendix/" | url }}">Appendix — Jack Burnham</a>
+      </li>
       <li class="{{ 'active' if slug == 'bibliography' }}">
         <a href="{{ "/thesis/bibliography/" | url }}">Bibliography</a>
+      </li>
+      <li class="{{ 'active' if slug == 'colofon' }}">
+        <a href="{{ "/thesis/colofon/" | url }}">Colofon</a>
       </li>
     </ol>
     <div class="toc-download">
@@ -46,6 +58,9 @@
     <header class="thesis-header">
       <span class="chapter-label">{{ chapterLabel }}</span>
       <h1 class="chapter-title">{{ title }}</h1>
+      {% if titlePage %}
+      <img class="chapter-title-page" src="{{ titlePage | url }}" alt="{{ title }}">
+      {% endif %}
     </header>
 
     <article class="thesis-text">

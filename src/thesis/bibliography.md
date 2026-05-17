@@ -2,18 +2,20 @@
 layout: thesis.njk
 bodyClass: thesis
 title: Bibliography
-chapterLabel: Appendix
+chapterLabel: Bibliography
 slug: bibliography
-order: 7
+order: 10
+titlePage: /assets/images/title-pages/Bibliography.png
 prevChapter:
-  title: Concluding That Ducks Never Remain Yellow
-  url: /thesis/conclusion/
+  title: Appendix — Jack Burnham, Systems Esthetics
+  url: /thesis/appendix/
 nextChapter:
+  title: Colofon
+  url: /thesis/colofon/
 ---
-
 Amery, Heather/Stephen Cartwright (1979)
 
-Tuzen Wurden - In printsje-wurd-boek. Leeuwarden: Friese Pers Boekerij.
+*Tuzen Wurden - In printsje-wurd-boek. *Leeuwarden: Friese Pers Boekerij.
 
 Barthes, Roland (1953)
 
@@ -44,7 +46,8 @@ Accessed 21 November 2011.
 Burnham, Jack (1970)
 
 ‘The Aesthetics of Intelligent Systems’. On the Future of Art. New York: Viking Press. p. 95-122. Available from:
-  http://www.volny.cz/horvitz/burnham/aesth-sys.pdf Accessed 14 November 2011.
+
+http://www.volny.cz/horvitz/burnham/aesth-sys.pdf Accessed 14 November 2011.
 
 Dammbeck, Lutz (2001)
 
@@ -111,16 +114,21 @@ Accessed 21 November 2011.
 Tylor, Edward B. (1871)
 
 Primitive Culture; Researches into the development of mythology, philosophy, religion language, art and custom. Volume I. London: John Murray [1920]
-  http://www.alcatel-lucent.com/wps/portal/BellLabs/AwardsandRecognition - tabAnchor2
+
+http://www.alcatel-lucent.com/wps/portal/BellLabs/AwardsandRecognition - tabAnchor2
 
 Accessed 27 December 2011
-  http://www.gkennedy.info/indexhibitv070e/index.php?/kennedy-browne/milton-friedman-on-the-wonder-of-the-freemarket-pe/
+
+http://www.gkennedy.info/indexhibitv070e/index.php?/kennedy-browne/milton-friedman-on-the-wonder-of-the-freemarket-pe/
 
 Accessed 11 February 2012
-  http://public.web.cern.ch/public/en/About/About-en.html
+
+http://public.web.cern.ch/public/en/About/About-en.html
 
 Accessed 18 February 2012
 
 http://foucault.info/foucault/biography.html Accessed 26 February 2012
 
 http://oxforddictionaries.com/definition/phenomenon?q=phenomenon
+
+Accessed 26 February 2012

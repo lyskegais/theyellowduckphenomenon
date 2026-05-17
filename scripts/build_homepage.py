@@ -37,11 +37,16 @@ def duck(label: str, image: str | None = None, url: str | None = None) -> str:
 def parse_md(path: Path):
     """Return (preview_text, list_of_blocks).
 
-    blocks is a list of dicts: {"type": "para"|"heading"|"quote", "text": "..."}.
+    blocks is a list of dicts: {"type": "para"|"heading"|"quote"|"image", "text": ...}.
+    Stops at the `---` separator that begins the footnote definitions.
     """
     raw = path.read_text(encoding="utf-8")
     # Strip frontmatter
     raw = re.sub(r"^---\n.*?\n---\n", "", raw, count=1, flags=re.DOTALL)
+    # Drop footnote definitions section (everything from a line that is just `---`)
+    raw = re.split(r"\n---\n", raw, maxsplit=1)[0]
+    # Strip footnote markers like [^1] from the visible homepage text
+    raw = re.sub(r"\[\^\d+\]", "", raw)
 
     blocks = []
     current_para = []
@@ -55,27 +60,35 @@ def parse_md(path: Path):
 
     state = "para"
     for line in raw.split("\n"):
-        if not line.strip():
+        stripped = line.strip()
+        if not stripped:
             flush(state)
             state = "para"
             continue
-        if line.startswith("## "):
+        # Skip footnote definitions and standalone image lines (handled
+        # via inline_ducks not the raw markdown image syntax)
+        if re.match(r"^\[\^\d+\]:", stripped):
+            continue
+        if stripped.startswith("![") or stripped.startswith("!["):
             flush(state)
-            blocks.append({"type": "heading", "text": line[3:].strip()})
+            continue  # images on the chapter page are not shown inline on the homepage
+        if stripped.startswith("## "):
+            flush(state)
+            blocks.append({"type": "heading", "text": stripped[3:].strip()})
             state = "para"
             continue
-        if line.startswith("> "):
+        if stripped.startswith("> "):
             if state != "quote":
                 flush(state)
                 state = "quote"
-            current_para.append(line[2:].strip())
+            current_para.append(stripped[2:].strip())
             continue
-        if line.strip() == ">":
+        if stripped == ">":
             continue
         if state != "para":
             flush(state)
             state = "para"
-        current_para.append(line.strip())
+        current_para.append(stripped)
     flush(state)
 
     preview = ""
@@ -105,17 +118,24 @@ def render_chapter_html(blocks, inline_ducks=None):
 
 
 # ---------- chapter map ----------
+TITLE_PAGES = "/assets/images/title-pages"
+
 CHAPTERS = [
+    {
+        "md": None,  # cover has its own special body
+        "url": "/thesis/cover/",
+        "label": "Cover",
+        "before": [
+            {"label": "Cover — The Yellow Duck Phenomenon", "image": f"{TITLE_PAGES}/Cover.png", "url": "/thesis/cover/"},
+        ],
+        "inline_ducks": {},
+    },
     {
         "md": "introduction.md",
         "url": "/thesis/introduction/",
         "label": "Introducing the Yellow Duck",
         "before": [
-            {
-                "label": "Introduction — title page",
-                "image": "/assets/images/title-pages/Introduction.png",
-                "url": "/thesis/introduction/",
-            },
+            {"label": "Introducing the Yellow Duck — title page", "image": f"{TITLE_PAGES}/Introducing the Yellow Duck.png", "url": "/thesis/introduction/"},
         ],
         "inline_ducks": {},
     },
@@ -124,52 +144,25 @@ CHAPTERS = [
         "url": "/thesis/chapter-1/",
         "label": "Chapter I — A fixed set of rules",
         "before": [
-            {
-                "label": "Part I — A fixed set of rules",
-                "image": "/assets/images/title-pages/Part_I.png",
-                "url": "/thesis/chapter-1/",
-            },
-            {
-                "label": "Chapter I — title page",
-                "image": "/assets/images/title-pages/Chapter_1.png",
-                "url": "/thesis/chapter-1/",
-            },
+            {"label": "Chapter I — A fixed set of rules", "image": f"{TITLE_PAGES}/01_A fixed set of rules.png", "url": "/thesis/chapter-1/"},
         ],
-        "inline_ducks": {
-            "Definition of System": {
-                "label": "General System Theory — Ludwig von Bertalanffy, 1968",
-                "url": "/thesis/chapter-1/",
-            },
-        },
+        "inline_ducks": {},
     },
     {
         "md": "chapter-2.md",
         "url": "/thesis/chapter-2/",
         "label": "Chapter II — A fixed set of rules on art",
         "before": [
-            {
-                "label": "Chapter II — title page",
-                "image": "/assets/images/title-pages/Chapter_2.png",
-                "url": "/thesis/chapter-2/",
-            },
+            {"label": "Chapter II — A fixed set of rules on art", "image": f"{TITLE_PAGES}/02_A fixed set of rules on art.png", "url": "/thesis/chapter-2/"},
         ],
-        "inline_ducks": {
-            "Conceptual Art": {
-                "label": "Statements — Lawrence Weiner, 1968",
-                "url": "/thesis/chapter-2/",
-            },
-        },
+        "inline_ducks": {},
     },
     {
         "md": "chapter-3.md",
         "url": "/thesis/chapter-3/",
         "label": "Chapter III — Explained by artworks",
         "before": [
-            {
-                "label": "Chapter III — title page",
-                "image": "/assets/images/title-pages/Chapter_3.png",
-                "url": "/thesis/chapter-3/",
-            },
+            {"label": "Chapter III — A fixed set of rules on art explained by artworks", "image": f"{TITLE_PAGES}/03_A fixed set of rules on art explained by artworks.png", "url": "/thesis/chapter-3/"},
         ],
         "inline_ducks": {
             "A Transition From an Object-Oriented to a System-Oriented Culture": {
@@ -189,66 +182,58 @@ CHAPTERS = [
             },
             "Art is Conceptual Focus": {
                 "label": "Homes for America — Dan Graham, 1966–67",
-                "image": "/assets/images/defff/grahamhomes6667.jpg",
+                "image": "/assets/images/defff/homes_for_america_002.jpg",
                 "url": "/thesis/chapter-3/",
             },
             "No Definition or Theory of Art Can Be Historically Unvarying": {
                 "label": "The Bowery in Two Inadequate Descriptive Systems — Martha Rosler, 1974–75",
-                "image": "/assets/images/defff/Rosler.jpg",
+                "image": "/assets/images/defff/rosler_004.jpg",
                 "url": "/thesis/chapter-3/",
             },
         },
+    },
+    {
+        "md": "approach.md",
+        "url": "/thesis/approach/",
+        "label": "Approach",
+        "before": [
+            {"label": "Approach", "image": f"{TITLE_PAGES}/Approach.png", "url": "/thesis/approach/"},
+        ],
+        "inline_ducks": {},
     },
     {
         "md": "chapter-4.md",
         "url": "/thesis/chapter-4/",
         "label": "Chapter IV — Composition of Thoughts",
         "before": [
-            {
-                "label": "Part II — Composition",
-                "image": "/assets/images/title-pages/Part_II.png",
-                "url": "/thesis/chapter-4/",
-            },
-            {
-                "label": "Chapter IV — title page",
-                "url": "/thesis/chapter-4/",
-            },
+            {"label": "Chapter IV — Composition of Thoughts", "image": f"{TITLE_PAGES}/04_Composition of Thoughts.png", "url": "/thesis/chapter-4/"},
         ],
-        "inline_ducks": {
-            "System": {
-                "label": "Vorm — Lyske Gais",
-                "image": "/assets/images/defff/Vorm.jpg",
-                "url": "/projects/",
-            },
-        },
+        "inline_ducks": {},
     },
     {
         "md": "chapter-5.md",
         "url": "/thesis/chapter-5/",
         "label": "Chapter V — Finding the Yellow Duck",
         "before": [
-            {
-                "label": "Chapter V — title page",
-                "url": "/thesis/chapter-5/",
-            },
+            {"label": "Chapter V — Finding the Yellow Duck", "image": f"{TITLE_PAGES}/05_Finding the Yellow Duck.png", "url": "/thesis/chapter-5/"},
         ],
-        "inline_ducks": {
-            "Plan (Order)": {
-                "label": "Lyske Gais — planning process",
-                "image": "/assets/images/defff/F1010007.jpg",
-                "url": "/projects/",
-            },
-        },
+        "inline_ducks": {},
     },
     {
         "md": "conclusion.md",
         "url": "/thesis/conclusion/",
         "label": "Concluding That Ducks Never Remain Yellow",
         "before": [
-            {
-                "label": "Conclusion — title page",
-                "url": "/thesis/conclusion/",
-            },
+            {"label": "Concluding That Ducks Never Remain Yellow", "image": f"{TITLE_PAGES}/Concluding that ducks never remain yellow.png", "url": "/thesis/conclusion/"},
+        ],
+        "inline_ducks": {},
+    },
+    {
+        "md": "appendix.md",
+        "url": "/thesis/appendix/",
+        "label": "Appendix — Jack Burnham, Systems Esthetics",
+        "before": [
+            {"label": "Appendix — Jack Burnham, Systems Esthetics", "image": f"{TITLE_PAGES}/Appendix.png", "url": "/thesis/appendix/"},
         ],
         "inline_ducks": {},
     },
@@ -257,10 +242,16 @@ CHAPTERS = [
         "url": "/thesis/bibliography/",
         "label": "Bibliography",
         "before": [
-            {
-                "label": "Bibliography — title page",
-                "url": "/thesis/bibliography/",
-            },
+            {"label": "Bibliography", "image": f"{TITLE_PAGES}/Bibliography.png", "url": "/thesis/bibliography/"},
+        ],
+        "inline_ducks": {},
+    },
+    {
+        "md": "colofon.md",
+        "url": "/thesis/colofon/",
+        "label": "Colofon",
+        "before": [
+            {"label": "Colofon", "image": f"{TITLE_PAGES}/Colofon.png", "url": "/thesis/colofon/"},
         ],
         "inline_ducks": {},
     },
@@ -272,6 +263,10 @@ def build():
     for ch in CHAPTERS:
         for d in ch["before"]:
             body_parts.append(duck(d["label"], d.get("image"), d.get("url")))
+
+        if ch["md"] is None:
+            # Cover — no body text; the duck before it is enough
+            continue
 
         preview, blocks = parse_md(THESIS / ch["md"])
         inner = render_chapter_html(blocks, ch["inline_ducks"])
