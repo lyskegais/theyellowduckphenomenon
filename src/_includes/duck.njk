@@ -1,0 +1,38 @@
+{% extends "base.njk" %}
+
+{% block content %}
+<nav class="site-nav">
+  <a href="{{ "/" | url }}" class="nav-home">The Yellow Duck Phenomenon</a>
+  <a href="{{ "/thesis/" | url }}" class="nav-thesis">Text</a>
+  <a href="{{ "/projects/" | url }}" class="nav-projects">Projects</a>
+  <a href="{{ "/ducks/" | url }}" class="nav-ducks active">Ducks</a>
+</nav>
+
+<main class="duck-page">
+  <header class="duck-header">
+    <span class="duck-kind">{{ kind | capitalize }}</span>
+    <time class="duck-date" datetime="{{ date | formatDate }}">{{ date | formatDate }}</time>
+    <h1 class="duck-title">{{ title }}</h1>
+    {% if anchor %}
+    <p class="duck-anchor">
+      Attached to
+      <a href="{{ ('/thesis/' + anchor.chapter + '/') | url }}">{{ anchor.chapter | replace("chapter-", "Chapter ") | replace("-", " ") | capitalize }}</a>
+    </p>
+    {% endif %}
+  </header>
+
+  {% if kind == "project" and target %}
+  <div class="duck-target">
+    <a href="{{ target | url }}" class="duck-target-link">→ {{ title }} <span class="duck-target-note">(project)</span></a>
+  </div>
+  {% endif %}
+
+  <article class="duck-body">
+    {{ content | safe }}
+  </article>
+
+  <nav class="duck-nav">
+    <a href="{{ "/ducks/" | url }}" class="back-to-ducks">← All ducks</a>
+  </nav>
+</main>
+{% endblock %}

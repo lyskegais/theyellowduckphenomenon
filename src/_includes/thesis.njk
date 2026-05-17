@@ -5,6 +5,7 @@
   <a href="{{ "/" | url }}" class="nav-home">The Yellow Duck Phenomenon</a>
   <a href="{{ "/thesis/" | url }}" class="nav-thesis">Text</a>
   <a href="{{ "/projects/" | url }}" class="nav-projects">Projects</a>
+  <a href="{{ "/ducks/" | url }}" class="nav-ducks">Ducks</a>
 </nav>
 
 <div class="thesis-layout">
@@ -64,7 +65,7 @@
     </header>
 
     <article class="thesis-text">
-      {{ content | safe }}
+      {{ content | injectDucks(slug, collections.ducks, "/assets/images/07_Yellow_Ducks.png" | url) | safe }}
     </article>
 
     <nav class="chapter-nav">

@@ -1,0 +1,239 @@
+/* ============================================================
+   DUCKS — branches off the core text
+   ============================================================ */
+
+/* ---- Branch duck appearing INSIDE chapter prose ---- */
+.branch-duck-link {
+  display: inline-block;
+  text-decoration: none;
+  margin: 0 0.3em;
+  vertical-align: middle;
+}
+
+.branch-duck {
+  height: 1.4em;
+  width: auto;
+  display: inline;
+  vertical-align: middle;
+  transition: transform 0.15s ease;
+}
+
+.branch-duck-link:hover .branch-duck {
+  transform: scale(1.25);
+}
+
+/* Project ducks get a faint glow so you can tell them apart */
+.branch-duck-link[data-kind="project"] .branch-duck {
+  filter: drop-shadow(0 0 3px rgba(207, 165, 0, 0.6));
+}
+
+/* Native tooltip via title attribute is too slow; use a CSS pseudo */
+.branch-duck-link::after {
+  content: attr(data-date) "  ·  " attr(data-title);
+  position: absolute;
+  background: var(--near-black);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  padding: 4px 8px;
+  border-radius: 2px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.branch-duck-link:hover::after {
+  opacity: 1;
+  transform: translateY(-22px);
+}
+
+/* ============================================================
+   DUCKS INDEX — the timeline page
+   ============================================================ */
+
+body.ducks {
+  background: var(--white);
+  background-image:
+    linear-gradient(rgba(158,155,148,0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(158,155,148,0.10) 1px, transparent 1px);
+  background-size: 8px 8px;
+  font-family: var(--font-body);
+  color: var(--dark-grey);
+}
+
+.ducks-index {
+  max-width: 880px;
+  margin: 100px auto 80px;
+  padding: 0 32px;
+}
+
+.ducks-header h1 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 3rem;
+  letter-spacing: 0.05em;
+  color: var(--near-black);
+  margin-bottom: 16px;
+}
+
+.ducks-intro {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--mid-grey);
+  max-width: 640px;
+  margin-bottom: 48px;
+}
+
+.ducks-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid var(--light-grey);
+}
+
+.duck-row {
+  display: grid;
+  grid-template-columns: 110px 160px 90px 1fr;
+  gap: 24px;
+  align-items: baseline;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--light-grey);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.duck-row-date {
+  font-family: var(--font-body);
+  color: var(--mid-grey);
+  font-variant-numeric: tabular-nums;
+}
+
+.duck-row-chapter a {
+  color: var(--mid-grey);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--light-grey);
+}
+.duck-row-chapter a:hover { color: var(--near-black); }
+
+.duck-row-kind {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid-grey);
+}
+
+.duck-kind-project .duck-row-kind {
+  color: #b58a00;
+}
+
+.duck-row-title {
+  color: var(--near-black);
+  text-decoration: none;
+  font-weight: 700;
+}
+.duck-row-title:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--mid-grey);
+  text-underline-offset: 3px;
+}
+
+.ducks-empty {
+  margin-top: 48px;
+  color: var(--mid-grey);
+  font-size: 0.9rem;
+}
+
+/* ============================================================
+   INDIVIDUAL DUCK PAGE
+   ============================================================ */
+
+.duck-page {
+  max-width: 680px;
+  margin: 100px auto 80px;
+  padding: 0 32px;
+}
+
+.duck-header {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--light-grey);
+}
+
+.duck-kind {
+  display: inline-block;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mid-grey);
+  margin-right: 12px;
+}
+
+.duck-date {
+  font-size: 0.75rem;
+  color: var(--mid-grey);
+  font-variant-numeric: tabular-nums;
+}
+
+.duck-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 2.2rem;
+  letter-spacing: 0.04em;
+  color: var(--near-black);
+  line-height: 1.15;
+  margin: 12px 0 16px;
+}
+
+.duck-anchor {
+  font-size: 0.75rem;
+  color: var(--mid-grey);
+}
+.duck-anchor a { color: var(--near-black); }
+
+.duck-target {
+  margin: 24px 0;
+  padding: 16px 20px;
+  background: var(--off-white);
+  border: 1px solid var(--light-grey);
+}
+.duck-target-link {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--near-black);
+  text-decoration: none;
+}
+.duck-target-link:hover { text-decoration: underline; }
+.duck-target-note {
+  font-size: 0.7rem;
+  color: var(--mid-grey);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-left: 6px;
+}
+
+.duck-body {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--dark-grey);
+}
+
+.duck-body p { margin-bottom: 1em; }
+
+.duck-nav {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--light-grey);
+}
+
+.back-to-ducks {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--mid-grey);
+  text-decoration: none;
+}
+.back-to-ducks:hover { color: var(--near-black); }

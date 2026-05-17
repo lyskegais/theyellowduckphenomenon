@@ -1,0 +1,54 @@
+---
+layout: false
+bodyClass: ducks
+permalink: /ducks/
+eleventyExcludeFromCollections: true
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ducks — The Yellow Duck Phenomenon</title>
+  <link rel="stylesheet" href="{{ "/assets/css/style.css" | url }}">
+  <link rel="stylesheet" href="{{ "/assets/css/ducks.css" | url }}">
+</head>
+<body class="ducks">
+  <nav class="site-nav">
+    <a href="{{ "/" | url }}" class="nav-home">The Yellow Duck Phenomenon</a>
+    <a href="{{ "/thesis/" | url }}" class="nav-thesis">Text</a>
+    <a href="{{ "/projects/" | url }}" class="nav-projects">Projects</a>
+    <a href="{{ "/ducks/" | url }}" class="nav-ducks active">Ducks</a>
+  </nav>
+
+  <main class="ducks-index">
+    <header class="ducks-header">
+      <h1>Ducks</h1>
+      <p class="ducks-intro">
+        A growing collection of branches off the original 2012 text — later thoughts,
+        notes, and pointers to projects. Each duck is anchored to a specific spot in
+        the text and reappears there as a small inline marker.
+      </p>
+    </header>
+
+    {% if collections.ducks and collections.ducks.length %}
+    <ol class="ducks-list" reversed>
+      {% for d in collections.ducks %}
+      <li class="duck-row duck-kind-{{ d.data.kind }}">
+        <time class="duck-row-date" datetime="{{ d.data.date | formatDate }}">{{ d.data.date | formatDate }}</time>
+        <span class="duck-row-chapter">
+          {% if d.data.anchor and d.data.anchor.chapter %}
+          <a href="{{ ('/thesis/' + d.data.anchor.chapter + '/') | url }}">{{ d.data.anchor.chapter | replace("chapter-", "Chapter ") | replace("-", " ") | capitalize }}</a>
+          {% endif %}
+        </span>
+        <span class="duck-row-kind">{{ d.data.kind }}</span>
+        <a class="duck-row-title" href="{% if d.data.kind == 'project' and d.data.target %}{{ d.data.target | url }}{% else %}{{ d.url }}{% endif %}">{{ d.data.title }}</a>
+      </li>
+      {% endfor %}
+    </ol>
+    {% else %}
+    <p class="ducks-empty">No ducks yet. Drop a markdown file into <code>src/ducks/</code> to add one.</p>
+    {% endif %}
+  </main>
+</body>
+</html>

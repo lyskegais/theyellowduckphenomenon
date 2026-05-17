@@ -6,6 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 THESIS = ROOT / "src" / "thesis"
+DUCKS_DIR = ROOT / "src" / "ducks"
 OUT = ROOT / "src" / "index.njk"
 
 DUCK_SRC = '{{ "/assets/images/07_Yellow_Ducks.png" | url }}'
@@ -99,9 +100,12 @@ def parse_md(path: Path):
     return preview, blocks
 
 
-def render_chapter_html(blocks, inline_ducks=None):
-    """inline_ducks: dict mapping section heading -> duck dict or tuple."""
+def render_chapter_html(blocks, inline_ducks=None, branch_ducks=None):
+    """inline_ducks: dict mapping section heading -> duck dict.
+       branch_ducks: list of {date, title, kind, target, after_phrase, url}
+                     to inject after the matching paragraph."""
     inline_ducks = inline_ducks or {}
+    branch_ducks = branch_ducks or []
     parts = []
     for b in blocks:
         text = b["text"]
@@ -114,7 +118,79 @@ def render_chapter_html(blocks, inline_ducks=None):
             parts.append(f'<span class="pull-quote">“{text}”</span>')
         else:
             parts.append(text)
+            # Check if any branch duck attaches after this paragraph
+            for bd in branch_ducks:
+                phrase = bd.get("after_phrase", "")
+                needle = phrase[:60]
+                if needle and needle in text:
+                    label = f"{bd['date']}  ·  {bd['title']}"
+                    target = bd["target"] if bd["kind"] == "project" else bd["url"]
+                    parts.append(duck(label, None, target))
     return " ".join(parts)
+
+
+# ---------- duck loading ----------
+def parse_frontmatter(text):
+    m = re.match(r"^---\n(.*?)\n---\n", text, re.DOTALL)
+    if not m:
+        return {}, text
+    fm_text = m.group(1)
+    body = text[m.end():]
+    fm = {}
+    # Simple YAML-ish parser: top-level key: value, nested two-space-indented
+    cur_key = None
+    for line in fm_text.split("\n"):
+        if not line.strip():
+            continue
+        if line.startswith("  ") and cur_key:
+            # nested key
+            kv = line.strip().split(":", 1)
+            if len(kv) == 2:
+                if not isinstance(fm[cur_key], dict):
+                    fm[cur_key] = {}
+                fm[cur_key][kv[0].strip()] = kv[1].strip().strip('"').strip("'")
+        else:
+            kv = line.split(":", 1)
+            if len(kv) == 2:
+                cur_key = kv[0].strip()
+                val = kv[1].strip()
+                if val:
+                    fm[cur_key] = val.strip('"').strip("'")
+                else:
+                    fm[cur_key] = {}
+    return fm, body
+
+
+def eleventy_file_slug(stem: str) -> str:
+    """Mimic Eleventy's fileSlug behaviour — strip a leading ISO date."""
+    m = re.match(r"^\d{4}-\d{2}-\d{2}-(.+)$", stem)
+    return m.group(1) if m else stem
+
+
+def load_branch_ducks():
+    """Return dict {chapter_slug: [duck_dict, ...]}."""
+    by_chapter = {}
+    if not DUCKS_DIR.exists():
+        return by_chapter
+    for p in sorted(DUCKS_DIR.glob("*.md")):
+        raw = p.read_text(encoding="utf-8")
+        fm, _ = parse_frontmatter(raw)
+        anchor = fm.get("anchor", {}) or {}
+        chap = anchor.get("chapter") if isinstance(anchor, dict) else None
+        if not chap:
+            continue
+        file_slug = eleventy_file_slug(p.stem)
+        duck = {
+            "slug": file_slug,
+            "date": fm.get("date", ""),
+            "title": fm.get("title", ""),
+            "kind": fm.get("kind", "branch"),
+            "target": fm.get("target", ""),
+            "after_phrase": anchor.get("after", "") if isinstance(anchor, dict) else "",
+            "url": f"/ducks/{file_slug}/",
+        }
+        by_chapter.setdefault(chap, []).append(duck)
+    return by_chapter
 
 
 # ---------- chapter map ----------
@@ -259,17 +335,24 @@ CHAPTERS = [
 
 
 def build():
+    branch_ducks_by_chapter = load_branch_ducks()
+    if branch_ducks_by_chapter:
+        n = sum(len(v) for v in branch_ducks_by_chapter.values())
+        print(f"Loaded {n} branch ducks across {len(branch_ducks_by_chapter)} chapters")
+
     body_parts = []
     for ch in CHAPTERS:
         for d in ch["before"]:
             body_parts.append(duck(d["label"], d.get("image"), d.get("url")))
 
         if ch["md"] is None:
-            # Cover — no body text; the duck before it is enough
             continue
 
         preview, blocks = parse_md(THESIS / ch["md"])
-        inner = render_chapter_html(blocks, ch["inline_ducks"])
+        # Look up which thesis-chapter slug this homepage section maps to
+        ch_slug = ch["md"].replace(".md", "")
+        branch_ducks = branch_ducks_by_chapter.get(ch_slug, [])
+        inner = render_chapter_html(blocks, ch["inline_ducks"], branch_ducks)
 
         body_parts.append(
             '<span class="home-section" '

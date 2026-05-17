@@ -1,0 +1,5 @@
+{
+  "layout": "duck.njk",
+  "tags": "ducks",
+  "permalink": "/ducks/{{ page.fileSlug }}/"
+}
